@@ -73,6 +73,7 @@ export class PurchaseTableComponent implements OnInit {
   paidTotalAmount = 0;
   paidTotalQuantity = 0;
   topPaidCategory = '—';
+  paidByCity: { city: string; amount: number; count: number }[] = [];
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -149,5 +150,17 @@ export class PurchaseTableComponent implements OnInit {
       }
     }
     this.topPaidCategory = topCat;
+
+    // Paid amount grouped by city
+    const cityMap = new Map<string, { amount: number; count: number }>();
+    for (const row of paidRows) {
+      const entry = cityMap.get(row.city) ?? { amount: 0, count: 0 };
+      entry.amount += row.amount;
+      entry.count++;
+      cityMap.set(row.city, entry);
+    }
+    this.paidByCity = [...cityMap.entries()]
+      .map(([city, data]) => ({ city, ...data }))
+      .sort((a, b) => b.amount - a.amount);
   }
 }

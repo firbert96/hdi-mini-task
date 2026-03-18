@@ -14,35 +14,77 @@
     }
   </div>
 } @else {
-    <!-- Summary Cards -->
-  <div class="summary-bar">
-    <mat-card appearance="outlined" class="summary-card">
-      <mat-card-content>
-        <div class="summary-label">Transactions</div>
-        <div class="summary-value">{{ totalTransactions }}</div>
-      </mat-card-content>
-    </mat-card>
+  <!-- Dashboard: Summary + Aggregation -->
+  <div class="dashboard-row">
+    <!-- Summary Cards (2×2 grid) -->
+    <div class="summary-grid">
+      <mat-card appearance="outlined" class="summary-card">
+        <mat-card-content>
+          <div class="summary-icon">📊</div>
+          <div class="summary-info">
+            <div class="summary-label">Transactions</div>
+            <div class="summary-value">{{ totalTransactions }}</div>
+          </div>
+        </mat-card-content>
+      </mat-card>
 
-    <mat-card appearance="outlined" class="summary-card">
-      <mat-card-content>
-        <div class="summary-label">Paid Amount</div>
-        <div class="summary-value">{{ paidTotalAmount | currency: 'IDR' : 'symbol-narrow' : '1.0-0' }}</div>
-      </mat-card-content>
-    </mat-card>
+      <mat-card appearance="outlined" class="summary-card">
+        <mat-card-content>
+          <div class="summary-icon">💰</div>
+          <div class="summary-info">
+            <div class="summary-label">Paid Amount</div>
+            <div class="summary-value">{{ paidTotalAmount | currency: 'IDR' : 'symbol-narrow' : '1.0-0' }}</div>
+          </div>
+        </mat-card-content>
+      </mat-card>
 
-    <mat-card appearance="outlined" class="summary-card">
-      <mat-card-content>
-        <div class="summary-label">Paid Quantity</div>
-        <div class="summary-value">{{ paidTotalQuantity }}</div>
-      </mat-card-content>
-    </mat-card>
+      <mat-card appearance="outlined" class="summary-card">
+        <mat-card-content>
+          <div class="summary-icon">📦</div>
+          <div class="summary-info">
+            <div class="summary-label">Paid Quantity</div>
+            <div class="summary-value">{{ paidTotalQuantity }}</div>
+          </div>
+        </mat-card-content>
+      </mat-card>
 
-    <mat-card appearance="outlined" class="summary-card">
-      <mat-card-content>
-        <div class="summary-label">Top Paid Category</div>
-        <div class="summary-value">{{ topPaidCategory }}</div>
-      </mat-card-content>
-    </mat-card>
+      <mat-card appearance="outlined" class="summary-card">
+        <mat-card-content>
+          <div class="summary-icon">🏆</div>
+          <div class="summary-info">
+            <div class="summary-label">Top Paid Category</div>
+            <div class="summary-value">{{ topPaidCategory }}</div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Aggregation: Paid Amount by City -->
+    @if (paidByCity.length) {
+      <div class="aggregation-section">
+        <h3 class="aggregation-title">Paid Amount by City</h3>
+        <div class="aggregation-table mat-elevation-z1">
+          <table>
+            <thead>
+              <tr>
+                <th>City</th>
+                <th class="num-col">Txns</th>
+                <th class="num-col">Paid Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (row of paidByCity; track row.city) {
+                <tr>
+                  <td>{{ row.city }}</td>
+                  <td class="num-col">{{ row.count }}</td>
+                  <td class="num-col">{{ row.amount | currency: 'IDR' : 'symbol-narrow' : '1.0-0' }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
   </div>
 
   <!-- Filter Bar -->
@@ -95,8 +137,6 @@
       </button>
     }
   </div>
-
-
 
   <!-- Data Table -->
   <div class="table-container mat-elevation-z2">
@@ -172,3 +212,4 @@
     ></mat-paginator>
   </div>
 }
+
