@@ -20,6 +20,28 @@
   }
 }
 
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 16px;
+
+  .filter-field {
+    flex: 1;
+    min-width: 160px;
+  }
+
+  .search-field {
+    flex: 2;
+    min-width: 220px;
+  }
+
+  .clear-btn {
+    height: 56px;
+  }
+}
+
 .table-container {
   border-radius: 8px;
   overflow: hidden;
