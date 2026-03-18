@@ -1,6 +1,6 @@
 # hdi-mini-task
 
-An Angular 21 application built with Angular Material.
+An Angular 21 application built with Angular Material. This code of project is mostly develop by AI assistant (github copilot with claude model) with careful attention to detail and some manual adjustments by own hand.
 
 ---
 
