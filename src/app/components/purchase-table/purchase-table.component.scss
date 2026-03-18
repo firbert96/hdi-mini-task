@@ -42,6 +42,30 @@
   }
 }
 
+.summary-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 20px;
+
+  .summary-card {
+    flex: 1;
+    min-width: 180px;
+
+    .summary-label {
+      font-size: 13px;
+      color: var(--mat-sys-on-surface-variant, #666);
+      margin-bottom: 4px;
+    }
+
+    .summary-value {
+      font-size: 22px;
+      font-weight: 500;
+      font-variant-numeric: tabular-nums;
+    }
+  }
+}
+
 .table-container {
   border-radius: 8px;
   overflow: hidden;
@@ -66,22 +90,26 @@
   color: var(--mat-sys-on-surface-variant);
 }
 
-.status-paid {
-  --mdc-chip-label-text-color: #1b5e20;
-  --mdc-chip-elevated-container-color: #e8f5e9;
+::ng-deep .status-paid {
+  background-color: #4caf50 !important;
+  color: #fff !important;
+  .mdc-evolution-chip__text-label { color: #fff !important; }
 }
 
-.status-pending {
-  --mdc-chip-label-text-color: #e65100;
-  --mdc-chip-elevated-container-color: #fff3e0;
+::ng-deep .status-pending {
+  background-color: #9e9e9e !important;
+  color: #fff !important;
+  .mdc-evolution-chip__text-label { color: #fff !important; }
 }
 
-.status-cancelled {
-  --mdc-chip-label-text-color: #b71c1c;
-  --mdc-chip-elevated-container-color: #ffebee;
+::ng-deep .status-cancelled {
+  background-color: #f44336 !important;
+  color: #fff !important;
+  .mdc-evolution-chip__text-label { color: #fff !important; }
 }
 
-.status-refunded {
-  --mdc-chip-label-text-color: #4a148c;
-  --mdc-chip-elevated-container-color: #f3e5f5;
+::ng-deep .status-refunded {
+  background-color: #ffeb3b !important;
+  color: #333 !important;
+  .mdc-evolution-chip__text-label { color: #333 !important; }
 }

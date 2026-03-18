@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, ViewChild } from '@angular/core';
-import { CurrencyPipe, DatePipe, TitleCasePipe } from '@angular/common';
+import { CurrencyPipe, DatePipe, NgClass, TitleCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatSortModule, MatSort } from '@angular/material/sort';
@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { Purchase } from '../../models/purchase.model';
 import { PurchaseService } from '../../services/purchase.service';
@@ -28,9 +29,11 @@ import { PurchaseService } from '../../services/purchase.service';
     MatSelectModule,
     MatIconModule,
     MatButtonModule,
+    MatCardModule,
     NgxSkeletonLoaderModule,
     CurrencyPipe,
     DatePipe,
+    NgClass,
     TitleCasePipe,
   ],
   templateUrl: './purchase-table.component.html',
@@ -65,6 +68,12 @@ export class PurchaseTableComponent implements OnInit {
   categories: string[] = [];
   statuses: string[] = [];
 
+  // Summary stats (computed from filtered data)
+  totalTransactions = 0;
+  paidTotalAmount = 0;
+  paidTotalQuantity = 0;
+  topPaidCategory = '—';
+
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -92,6 +101,7 @@ export class PurchaseTableComponent implements OnInit {
         setTimeout(() => {
           this.dataSource.sort = this.sort;
           this.dataSource.paginator = this.paginator;
+          this.updateSummary();
         });
       },
       error: () => {
@@ -101,8 +111,8 @@ export class PurchaseTableComponent implements OnInit {
   }
 
   applyFilters(): void {
-    // Trigger filter — value doesn't matter since filterPredicate reads component fields
     this.dataSource.filter = Date.now().toString();
+    this.updateSummary();
   }
 
   clearFilters(): void {
@@ -115,5 +125,29 @@ export class PurchaseTableComponent implements OnInit {
 
   get hasActiveFilters(): boolean {
     return !!(this.searchName || this.selectedCity || this.selectedCategory || this.selectedStatus);
+  }
+
+  private updateSummary(): void {
+    const filtered = this.dataSource.filteredData;
+    this.totalTransactions = filtered.length;
+
+    const paidRows = filtered.filter(r => r.status === 'paid');
+    this.paidTotalAmount = paidRows.reduce((sum, r) => sum + r.amount, 0);
+    this.paidTotalQuantity = paidRows.reduce((sum, r) => sum + r.quantity, 0);
+
+    // Top category by paid amount
+    const categoryTotals = new Map<string, number>();
+    for (const row of paidRows) {
+      categoryTotals.set(row.category, (categoryTotals.get(row.category) ?? 0) + row.amount);
+    }
+    let topCat = '—';
+    let topAmount = 0;
+    for (const [cat, amount] of categoryTotals) {
+      if (amount > topAmount) {
+        topCat = cat;
+        topAmount = amount;
+      }
+    }
+    this.topPaidCategory = topCat;
   }
 }
