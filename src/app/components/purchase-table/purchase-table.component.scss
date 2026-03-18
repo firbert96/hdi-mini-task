@@ -1,0 +1,65 @@
+.skeleton-wrapper {
+  border-radius: 8px;
+  overflow: hidden;
+  padding: 16px;
+
+  .skeleton-header {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 12px;
+    padding: 12px 8px;
+    border-bottom: 1px solid var(--mat-sys-outline-variant, #e0e0e0);
+  }
+
+  .skeleton-row {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 12px;
+    padding: 14px 8px;
+    border-bottom: 1px solid var(--mat-sys-outline-variant, #f0f0f0);
+  }
+}
+
+.table-container {
+  border-radius: 8px;
+  overflow: hidden;
+
+  table {
+    width: 100%;
+  }
+}
+
+.amount-cell {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.qty-cell {
+  text-align: center;
+}
+
+.no-data {
+  text-align: center;
+  padding: 24px;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.status-paid {
+  --mdc-chip-label-text-color: #1b5e20;
+  --mdc-chip-elevated-container-color: #e8f5e9;
+}
+
+.status-pending {
+  --mdc-chip-label-text-color: #e65100;
+  --mdc-chip-elevated-container-color: #fff3e0;
+}
+
+.status-cancelled {
+  --mdc-chip-label-text-color: #b71c1c;
+  --mdc-chip-elevated-container-color: #ffebee;
+}
+
+.status-refunded {
+  --mdc-chip-label-text-color: #4a148c;
+  --mdc-chip-elevated-container-color: #f3e5f5;
+}
