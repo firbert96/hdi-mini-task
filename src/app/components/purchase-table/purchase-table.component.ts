@@ -74,6 +74,7 @@ export class PurchaseTableComponent implements OnInit {
   paidTotalQuantity = 0;
   topPaidCategory = '—';
   paidByCity: { city: string; amount: number; count: number }[] = [];
+  summaryHighlight = false;
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -102,6 +103,13 @@ export class PurchaseTableComponent implements OnInit {
         setTimeout(() => {
           this.dataSource.sort = this.sort;
           this.dataSource.paginator = this.paginator;
+
+          this.dataSource.sortingDataAccessor = (row: Purchase, col: string) => {
+            if (col === 'date') return new Date(row.date).getTime();
+            if (col === 'amount') return row.amount;
+            return (row as Record<string, any>)[col];
+          };
+
           this.updateSummary();
         });
       },
@@ -114,6 +122,12 @@ export class PurchaseTableComponent implements OnInit {
   applyFilters(): void {
     this.dataSource.filter = Date.now().toString();
     this.updateSummary();
+    this.triggerHighlight();
+  }
+
+  private triggerHighlight(): void {
+    this.summaryHighlight = false;
+    requestAnimationFrame(() => this.summaryHighlight = true);
   }
 
   clearFilters(): void {
